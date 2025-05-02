@@ -1,48 +1,43 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { useRef, useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { TodoItemsContext } from "../store/todo-items-store";
 
-function AddTodo({ onNewItem }) {
-  const [todoName, setTodoName] = useState([]);
-  const [dueDate, setDueDate] = useState([]);
+function AddTodo() {
+  const { addNewItem } = useContext(TodoItemsContext);
+  let todoNameElement = useRef();
+  let dueDateElement = useRef();
 
-  const handleNameChange = (event) => {
-    setTodoName(event.target.value);
-  };
-
-  const handleDateChange = (event) => {
-    setDueDate(event.target.value);
-  };
-
-  const handleAddButtonClicked = () => {
-    onNewItem(todoName, dueDate);
-    setDueDate("");
-    setTodoName("");
+  const handleAddButtonClicked = (event) => {
+    event.preventDefault();
+    // console.log(todoNameElement);
+    // console.log(event);
+    let todoName = todoNameElement.current.value;
+    let dueDate = dueDateElement.current.value;
+    addNewItem(todoName, dueDate);
+    todoNameElement.current.value = "";
+    dueDateElement.current.value = "";
   };
 
   return (
     <div className="container text-center">
-      <div className="row kg-row">
+      <form className="row kg-row" onSubmit={handleAddButtonClicked}>
         <div className="col-6">
           <input
             type="text"
+            ref={todoNameElement}
             placeholder="Enter Todo Here"
-            value={todoName}
-            onChange={handleNameChange}
           />
         </div>
         <div className="col-4">
-          <input type="date" value={dueDate} onChange={handleDateChange} />
+          <input type="date" ref={dueDateElement} />
         </div>
         <div className="col-2">
-          <button
-            type="button"
-            className="btn btn-success kg-button"
-            onClick={handleAddButtonClicked}
-          >
+          <button type="submit" className="btn btn-success kg-button">
             <IoIosAddCircleOutline />
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
