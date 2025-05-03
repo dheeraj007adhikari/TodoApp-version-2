@@ -4,11 +4,11 @@ import TodoItem from "./TodoItem";
 import styles from "./TodoItems.module.css";
 
 const TodoItems = ({ onDeleteClick }) => {
-  const { todoItems } = useContext(TodoItemsContext);
+  const { newTodoItems } = useContext(TodoItemsContext);
 
   return (
     <div className={styles.itemsContainer}>
-      {todoItems.map((item) => (
+      {newTodoItems.map((item) => (
         <TodoItem
           key={item.name}
           todoDate={item.dueDate}
